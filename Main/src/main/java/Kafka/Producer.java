@@ -2,11 +2,14 @@ package Kafka;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Producer {
@@ -17,23 +20,43 @@ public class Producer {
     public static void run() throws IOException, InterruptedException {
         Properties props = new Properties();
         props.put(ProducerConfig.CLIENT_ID_CONFIG, "demo");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.30.205:9092");
+//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.17.80.23:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
-        String dataPath = "/media/lucifer/STORAGE/IMPORTANTS/Documents/INTERN/BTL_Masterdev/Crawl/videos.csv";
-        String topicName = "quickstart-events";
+
+        String dataPath = "../Crawl/videos.csv";
+        String topicName = "videos-tracking";
 
         File file = new File(dataPath);
         long lastTime = file.lastModified();
 
         while (true) {
             if (lastTime != file.lastModified()) {
-                System.out.println("changed!!");
-                new Records(producer, topicName, dataPath, true).run();
+                System.out.println("File changed!!!");
                 lastTime = file.lastModified();
+                sendMessage(file, producer, topicName, true);
             }
             TimeUnit.MILLISECONDS.sleep(500);
+        }
+
+    }
+
+    private static void sendMessage(File file, KafkaProducer<String, String> producer, String
+            topicName, boolean ignoreHeader) {
+        try (Scanner scanner = new Scanner(file)) {
+            if (ignoreHeader) {
+                scanner.nextLine();
+            }
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                producer.send(new ProducerRecord<>(topicName, null, line));
+                producer.flush();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,23 +1,22 @@
 package SparkStream;
 
-public class Video {
-    private long index;
-    private String title;
-    private String published_date;
-    private long views;
-    private long likes;
-    private long comments;
-    private int year;
-    private int month;
-    private int day;
-    private int hour;
-    private int minute;
+import java.sql.Date;
+import java.sql.Timestamp;
 
-    public long getIndex() {
+public class Video {
+    private int index;
+    private String title;
+    private Date published_date;
+    private int views;
+    private int likes;
+    private int comments;
+    private Timestamp timestamp;
+
+    public int getIndex() {
         return index;
     }
 
-    public void setIndex(long index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 
@@ -29,75 +28,43 @@ public class Video {
         this.title = title;
     }
 
-    public String getPublished_date() {
+    public Date getPublished_date() {
         return published_date;
     }
 
-    public void setPublished_date(String published_date) {
+    public void setPublished_date(Date published_date) {
         this.published_date = published_date;
     }
 
-    public long getViews() {
+    public int getViews() {
         return views;
     }
 
-    public void setViews(long views) {
+    public void setViews(int views) {
         this.views = views;
     }
 
-    public long getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(long likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 
-    public long getComments() {
+    public int getComments() {
         return comments;
     }
 
-    public void setComments(long comments) {
+    public void setComments(int comments) {
         this.comments = comments;
     }
 
-    public int getYear() {
-        return year;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }
