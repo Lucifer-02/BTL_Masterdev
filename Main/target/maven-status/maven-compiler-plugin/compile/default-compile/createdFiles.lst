@@ -1,7 +1,6 @@
-Spark/SparkSS.class
 SparkStream/JavaSparkSessionSingleton.class
 Kafka/Producer.class
-Spark/DataProcessing.class
 Kafka/Records.class
+Spark/DataProcessing.class
 SparkStream/Streaming.class
 SparkStream/Video.class

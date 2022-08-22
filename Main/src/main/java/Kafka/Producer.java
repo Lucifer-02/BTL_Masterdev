@@ -20,15 +20,13 @@ public class Producer {
     public static void run() throws IOException, InterruptedException {
         Properties props = new Properties();
         props.put(ProducerConfig.CLIENT_ID_CONFIG, "demo");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.30.205:9092");
-//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.17.80.23:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.193.52:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
         String dataPath = "../Crawl/videos.csv";
-        String topicName = "videos-tracking";
+        String topicName = "video-tracking";
 
         File file = new File(dataPath);
         long lastTime = file.lastModified();
@@ -39,9 +37,8 @@ public class Producer {
                 lastTime = file.lastModified();
                 sendMessage(file, producer, topicName, true);
             }
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.SECONDS.sleep(1);
         }
-
     }
 
     private static void sendMessage(File file, KafkaProducer<String, String> producer, String

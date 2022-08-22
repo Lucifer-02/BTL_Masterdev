@@ -27,9 +27,11 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;performancePlugin.isProfileIndexing&quot;: &quot;true&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RunAnythingCache">
@@ -109,10 +111,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Producer" />
+        <item itemvalue="Application.Streaming" />
         <item itemvalue="JUnit.Test.test2" />
         <item itemvalue="JUnit.Test.test3" />
         <item itemvalue="Application.SparkSS" />
-        <item itemvalue="Application.Streaming" />
       </list>
     </recent_temporary>
   </component>
@@ -132,8 +134,18 @@
       <workItem from="1660825497741" duration="1355000" />
       <workItem from="1660835683045" duration="392000" />
       <workItem from="1660836359550" duration="527000" />
-      <workItem from="1660874975564" duration="30020000" />
+      <workItem from="1660874975564" duration="30535000" />
+      <workItem from="1660963150561" duration="108000" />
+      <workItem from="1660963489331" duration="25251000" />
+      <workItem from="1661096910342" duration="151000" />
+      <workItem from="1661097096635" duration="793000" />
+      <workItem from="1661133837373" duration="4703000" />
+      <workItem from="1661151349963" duration="5881000" />
     </task>
     <servers />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

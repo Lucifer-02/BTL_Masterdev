@@ -34,16 +34,14 @@ public class Streaming {
         // Create a local StreamingContext and batch interval of x second
         SparkConf conf = new SparkConf()
 //                .setMaster("local")
-                .setAppName("Kafka Spark Integration");
+                .setAppName("Spark Streaming hoangnlv");
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(2));
+        jssc.checkpoint("hdfs://172.17.80.21:9000/user/hoangnlv/btl/output/data_tracking/checkpoint");
 
 
         //Define Kafka parameter
         Map<String, Object> kafkaParams = new HashMap<>();
-//        kafkaParams.put("bootstrap.servers", "localhost:9092");
-//        kafkaParams.put("bootstrap.servers", "172.17.80.21:9092");
-        kafkaParams.put("bootstrap.servers", "172.16.30.205:9092");
-
+        kafkaParams.put("bootstrap.servers", "192.168.193.52:9092");
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
         kafkaParams.put("group.id", "0");
@@ -53,7 +51,7 @@ public class Streaming {
         kafkaParams.put("enable.auto.commit", false);
 
         //Define a list of Kafka topic to subscribe
-        Collection<String> topics = Collections.singletonList("videos-tracking");
+        Collection<String> topics = Collections.singletonList("video-tracking");
 
 
         // Consume String data from Kafka
@@ -71,6 +69,8 @@ public class Streaming {
                 CSVReader csvReader = new CSVReader(new StringReader(chunk));
                 String[] line = csvReader.readNext();
                 Video video = new Video();
+
+                // Parse input data
                 try {
                     video.setIndex(Integer.parseInt(line[0]));
                     video.setTitle(line[1]);
@@ -79,17 +79,6 @@ public class Streaming {
                     video.setLikes(Integer.parseInt(line[4]));
                     video.setComments(Integer.parseInt(line[5]));
                     video.setTimestamp(new Timestamp(Long.parseLong(line[6])));
-
-
-//                    // parse timestamp
-//                    long timestamp = Long.parseLong(line[6]);
-//                    LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), java.time.ZoneId.systemDefault());
-//
-//                    video.setYear(localDateTime.getYear());
-//                    video.setMonth(localDateTime.getMonthValue());
-//                    video.setDay(localDateTime.getDayOfMonth());
-//                    video.setHour(localDateTime.getHour());
-//                    video.setMinute(localDateTime.getMinute());
 
                 } catch (NumberFormatException e) {
                     System.out.println(e.getMessage());
@@ -104,12 +93,7 @@ public class Streaming {
                 System.out.println("Empty DataFrame");
             } else {
                 rowDataset.write().mode("append")
-//                        .option("compression", "snappy")
-                        .option("checkpointLocation", "hdfs://172.17.80.21:9000/user/hoangnlv/btl/output/data_tracking/checkpoint")
-//                        .option("checkpointLocation", "./output/data_tracking/checkpoint")
                         .format("parquet")
-//                        .partitionBy("year", "month", "day", "hour", "minute")
-//                        .save("./output/data_tracking/checkpoint");
                         .save("hdfs://172.17.80.21:9000/user/hoangnlv/btl/output/data_tracking");
             }
 

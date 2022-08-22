@@ -14,10 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/* Thực hiện xử lý dữ liệu trên hadoop theo yêu cầu */
 public class DataProcessing {
     public static void main(String[] args) throws IOException, InterruptedException {
         run();
-//        checkLastModifiedTime();
     }
 
     public static void run() throws IOException, InterruptedException {
@@ -35,6 +35,7 @@ public class DataProcessing {
 
         parquetFileDF.show();
 
+        // transform data when file modified
         FileSystem fs = FileSystem.get(new Configuration());
 //        String hdfsFilePath = "./output/data_tracking/";
         String hdfsFilePath = "hdfs://172.17.80.21:9000/user/hoangnlv/btl/output/data_tracking";
@@ -67,7 +68,7 @@ public class DataProcessing {
     public static void removeTimestampFields(Dataset<Row> dataset, SparkSession spark) {
         dataset.createOrReplaceTempView("videos");
         Dataset<Row> simple = spark.sql(
-                "SELECT index, title, published_date, views, likes, comments FROM videos");
+                "SELECT index, title FROM videos");
         simple.show();
 
         // save to parquet file

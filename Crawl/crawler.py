@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
 import pandas as pd
 import time
+import datetime
 
 
 ## Function to get channel statistics
@@ -82,38 +83,44 @@ def get_video_details(youtube, video_ids):
 
 
 api_key = 'AIzaSyBiz_T8LgPyVbHMrltntux0EbxHCzgfSzc'
+#  api_key = 'AIzaSyBC7ZiWijY8KuJqfXb95IIKg77Z31H2TNc'
 #channel_id = 'UCnz-ZXXER4jOvuED5trXfEA'
 channel_ids = ['UCnz-ZXXER4jOvuED5trXfEA', # techTFQ
                'UCLLw7jmFsvfIVaUFsLs8mlQ', # Luke Barousse 
                'UCiT9RITQ9PW6BhXK0y2jaeg', # Ken Jee
                'UC7cs8q-gJRlGwj4A8OmCmXg', # Alex the analyst
-               'UC2UXDak6o7rBm23k3Vv5dww' # Tina Huang
+               'UC2UXDak6o7rBm23k3Vv5dww', # Tina Huang
+               'UC-9-kyTW8ZkZNDHQJ6FgpwQ', # Sơn Tùng M-TP Official 
+               'UCUT8RoNBTJvwW1iErP6-b-A'
               ]
 
 youtube = build('youtube', 'v3', developerKey=api_key)
 
-channel_statistics = get_channel_stats(youtube, channel_ids)
-channel_data = pd.DataFrame(channel_statistics)
+for i in range(1000):
+    print("number: ", i, "time: ", datetime.datetime.now())
+    channel_statistics = get_channel_stats(youtube, channel_ids)
+    channel_data = pd.DataFrame(channel_statistics)
 
 
-#  channel_data['Subscribers'] = pd.to_numeric(channel_data['Subscribers'])
-#  channel_data['Views'] = pd.to_numeric(channel_data['Views'])
-#  channel_data['Total_videos'] = pd.to_numeric(channel_data['Total_videos'])
+    #  channel_data['Subscribers'] = pd.to_numeric(channel_data['Subscribers'])
+    #  channel_data['Views'] = pd.to_numeric(channel_data['Views'])
+    #  channel_data['Total_videos'] = pd.to_numeric(channel_data['Total_videos'])
 
-playlist_id = channel_data.loc[channel_data['Channel_name']=='Ken Jee', 'playlist_id'].iloc[0]
-video_ids = get_video_ids(youtube, playlist_id)
+    playlist_id = channel_data.loc[channel_data['Channel_name']=='Disguised Toast', 'playlist_id'].iloc[0]
+    video_ids = get_video_ids(youtube, playlist_id)
 
 
-video_details = get_video_details(youtube, video_ids)
+    video_details = get_video_details(youtube, video_ids)
 
-video_data = pd.DataFrame(video_details)
+    video_data = pd.DataFrame(video_details)
 
-# get timestamp as JAVA type 
-timestamp = int(time.time() ) * 1000 
+    # get timestamp as JAVA type 
+    timestamp = int(time.time()) * 1000
 
-video_data['Published_date'] = pd.to_datetime(video_data['Published_date']).dt.date
-video_data['Views'] = pd.to_numeric(video_data['Views'])
-video_data['Likes'] = pd.to_numeric(video_data['Likes'])
-video_data['Timestamp'] = timestamp
+    video_data['Published_date'] = pd.to_datetime(video_data['Published_date']).dt.date
+    video_data['Views'] = pd.to_numeric(video_data['Views'])
+    video_data['Likes'] = pd.to_numeric(video_data['Likes'])
+    video_data['Timestamp'] = timestamp
 
-video_data.to_csv('videos.csv', index_label='Index')
+    video_data.to_csv('videos.csv', index_label='Index')
+    time.sleep(10)
